@@ -1,0 +1,41 @@
+<!Doctype html>
+<html>
+<div>
+<input type="text" value="" id="targetInput"></input>
+<button onclick="setTarget()">Set Target</button>
+</div>
+<br>
+<div>
+  <iframe id="targetFrame" src="" name="target" style="width:100%; height:400px"></iframe>
+</div>
+<div>
+<input type="text" value="Post Message" id="msg"></input>
+<button onclick="sendMsg()">Send</button>
+</div>
+<div>
+<textarea id="outLogs" rows="10" cols="100" disabled></textarea>
+<textarea id="inLogs" rows="10" cols="100" disabled></textarea>
+</div>
+
+<script>
+
+  function setTarget(){
+   var URL = document.getElementById("targetInput").value;
+   if (URL) {document.getElementById("targetFrame").src = URL;}
+  };
+
+function sendMsg(){
+    var win = window.frames.target;
+    var msgText = document.getElementById("msg").value;
+    win.postMessage(msgText, "*");
+    document.getElementById("outLogs").value += " Message \"" +msgText + "\" was sent successfully\r\n";
+  }
+
+  window.addEventListener("message", receiveMessage, false);
+
+  function receiveMessage(event)
+  {
+    document.getElementById("outLogs").value += " Message \"" + event.data + "\" was received from " + event.origin + "\r\n";
+  }
+</script>
+</html>
